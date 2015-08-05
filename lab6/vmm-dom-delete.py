@@ -5,9 +5,9 @@ import json
 import sys
 from getpass import getpass
 
-acipod = raw_input('Which ACI Pod # are you trying to push data to? ')
-username = raw_input('What is your student admin username (e.g. student1, student2, etc)? ')
-password = getpass('What is your student password? ')
+acipod = '3'
+username = 'student1'
+password = 'lumos123'
 apic = '10.29.10{0}.24'.format(acipod)
 
 auth = {'aaaUser': {'attributes': {'name': username, 'pwd': password } } }
@@ -112,11 +112,17 @@ for i in data['imdata']:
 # PLEASE DO NOT UNCOMMENT THE BELOW LINES AND DO NOT EXECUTE THE REMAINDER OF THIS FOR LOOP
 # To prove that it works, The Instructor of the course will perform it live on the projector for all students to see
 # Then we will erase the ACI Fabric and move on to the next set of labs
+
+whichVMM = raw_input('Which VMM Domain would you like to delete? ')
+
+vmmDomDnPrefix = 'uni/vmmp-VMware/dom-'
+
 for i in data['imdata']:
     vmmDomDn = i['vmmDomP']['attributes']['dn']
-    jsondata = {"vmmProvP":{"attributes":{"dn":"uni/vmmp-VMware","status":"modified"},"children":[{"vmmDomP":{"attributes":{"dn":str(vmmDomDn),"status":"deleted"},"children":[]}}]}}
-    # r = s.post('https://{0}/api/node/mo/uni/vmmp-VMware.json'.format(apic), cookies=cookies, data=json.dumps(jsondata), verify=False)
-    # print r.text
+    print vmmDomDn
+    if str(vmmDomDn) == vmmDomDnPrefix+whichVMM:
+        jsondata = {"vmmProvP":{"attributes":{"dn":"uni/vmmp-VMware","status":"modified"},"children":[{"vmmDomP":{"attributes":{"dn":str(vmmDomDn),"status":"deleted"},"children":[]}}]}}
+        r = s.post('https://{0}/api/node/mo/uni/vmmp-VMware.json'.format(apic), cookies=cookies, data=json.dumps(jsondata), verify=False)
 
 
 # After the instructor uncomments and runs the above Delete 'for' loop for everyone, then try to rerun the Print 'for' loop and see what it returns
