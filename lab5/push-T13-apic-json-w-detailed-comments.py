@@ -31,7 +31,7 @@ print acipod
 
 
 # Use the value from the acipod variable to populate the last digit of the third octet - which correlates to the aci pod #
-apic = '10.29.10{0}.24'.format(acipod)
+apic = '10.101.{0}.103'.format(acipod)
 print apic
 
 
